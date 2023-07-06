@@ -14,24 +14,25 @@
 	<div class="container">
 		<h1 class="display-4 mt-5">Cadastrando livro</h1>
 		<form action="#" th:action="@{/livro/cadastrar}" th:object="${livro}" method="post">
-			<div class="alert alert-success alert-dismissible" role="alert" ht:hidden"${#strings.isEmpty(mensagem)}">
-				<button type="button" class="close" data-dimiss="alert"></button>
+			<div class="alert alert-success alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(mensagem)}">
 				<span th:text="${mensagem}">Salvo com sucesso!</span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 			</div>
+			<input type="hidden" th:field="*{id}" th:value="${livro.id}" class="form-control" id="titulo" />
 			<div class="mb-3 row">
 				<div class="col-12">
 					<label for="titulo">Titulo</label>
-					<input type="text" th:field="*{titulo}" class="form-control" id="titulo" />
+					<input type="text" th:field="*{titulo}" th:value="${livro.titulo}" class="form-control" id="titulo" />
 				</div>
 			</div>
 			<div class="mb-3 row">
 				<div class="col-6">
 					<label for="autor">Autor</label>
-					<input type="text" th:field="*{autor}" class="form-control" id="autor" />
+					<input type="text" th:field="*{autor}" th:value="${livro.autor}" class="form-control" id="autor" />
 				</div>
 				<div class="col-2">
 					<label for="anoDePublicacao">Ano de Publicação</label>
-					<input type="number" th:field="*{anoDePublicacao}" class="form-control" id="anoDePublicacao" />
+					<input type="number" th:field="*{anoDePublicacao}" th:value="${livro.anoDePublicacao}" class="form-control" id="anoDePublicacao" />
 				</div>
 				<div class="col-4 d-grid">
 					<button type="submit" class="mt-4 btn btn-primary">Cadastrar Livro</button>

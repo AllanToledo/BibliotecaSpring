@@ -29,6 +29,8 @@
 					<td th:text="${livro.autor}"></td>
 					<td th:text="${livro.anoDePublicacao}"></td>
 					<td th:text="${livro.disponivel}"></td>
+					<td><a class="btn btn-primary" th:href="@{'/livro/cadastrar/' + ${livro.id}}">ATUALIZAR</a></td>
+					<td><button class="btn btn-danger" th:attr="onclick=|removerLivro('${livro.id}')|">REMOVER</button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -37,5 +39,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
 	crossorigin="anonymous"></script>
-
+<script>
+	async function removerLivro(id) {
+		console.log(id);
+		let response = await fetch("http://localhost:8080/biblioteca/livros/" + id, { method: 'DELETE' });
+		if(response.ok){
+			location.reload();
+		} else {
+			alert("Não foi possivel remover livro.");
+		}
+		
+	}
+</script>
 </html>
