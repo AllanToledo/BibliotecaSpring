@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -18,11 +18,7 @@
 				<span th:text="${mensagem}">Salvo com sucesso!</span>
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 			</div>
-			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(erro)}">
-				<span th:text="${erro}"></span>
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-			</div>
-			<input type="hidden" th:field="*{id}" th:value="${livro.id}" class="form-control" id="id" />
+			<input type="hidden" th:field="*{id}" th:value="${livro.id}" class="form-control" id="titulo" />
 			<div class="mb-3 row">
 				<div class="col-12">
 					<label for="titulo">Titulo</label>

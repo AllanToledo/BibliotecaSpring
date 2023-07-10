@@ -29,7 +29,7 @@ public class LivroService {
 	public Livro updateLivro(Livro livro, Long id) throws NotFoundException {
 		Livro atualizado = livroRepository.findById(id).orElseThrow(() -> new NotFoundException());
 		atualizado.setTitulo(livro.getTitulo());
-		atualizado.setDisponivel(livro.isDisponivel());
+		atualizado.setDisponivel(livro.getDisponivel());
 		atualizado.setAutor(livro.getAutor());
 		atualizado.setAnoDePublicacao(livro.getAnoDePublicacao());
 		livroRepository.save(atualizado);
