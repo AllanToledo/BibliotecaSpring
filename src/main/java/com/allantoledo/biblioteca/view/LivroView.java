@@ -45,12 +45,15 @@ public class LivroView {
 	public ModelAndView cadastrarLivros(@PathVariable Long id) {
 		var view = new ModelAndView("livro/cadastrarLivros");
 		Livro livro;
+		String erro = "";
 		try {
 			livro = livroService.getLivro(id);
 		} catch (NotFoundException e) {
 			livro = new Livro();
+			erro = "Livro não encontrado.";
 		}
 		view.addObject("livro", livro);
+		view.addObject("erro", erro);
 		return view;
 	}
 	
