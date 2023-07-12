@@ -1,5 +1,6 @@
 package com.allantoledo.biblioteca.model;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,9 +29,8 @@ public class Emprestimo {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="id_livro")
 	private Livro livro;
-	private Calendar dataDeEmprestimo;
-	private Calendar dataPrevistaDeDevolucao;
-	private Calendar dataRealDeDevolucao;
-	
+	private LocalDate dataDeEmprestimo;
+	private LocalDate dataPrevistaDeDevolucao;
+	private LocalDate dataRealDeDevolucao;
 	
 }

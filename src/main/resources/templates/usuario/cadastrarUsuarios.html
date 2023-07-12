@@ -13,6 +13,8 @@
 <body>
 	<div class="container">
 		<h1 class="display-4 mt-5">Cadastrando Usuário</h1>
+		
+		<a class="btn btn-light" href="/usuario" role="button">Listar</a>
 		<form action="#" th:action="@{/usuario/cadastrar}" th:object="${usuario}" method="post">
 			<div class="alert alert-success alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(mensagem)}">
 				<span th:text="${mensagem}">Salvo com sucesso!</span>

@@ -13,6 +13,14 @@
 <body>
 	<div class="container">
 		<h1 class="display-4 mt-5">Livros disponiveis</h1>
+		<div class="row">
+			<div class="col-6 d-grid gap-2 d-md-flex">			
+		<a class="btn btn-light" href="/livro/cadastrar" role="button">Cadastrar</a>
+			</div>
+			<div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+			    <a class="btn btn-primary" href="/usuario"  role="button">Usuarios</a>
+			</div>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>
@@ -23,7 +31,8 @@
 					<th scope="col">Disponivel</th>
 				</tr>
 			</thead>
-			<tbt				<tr th:each="livro : ${livros}">
+			<tbody>		
+	   			<tr th:each="livro : ${livros}">
 					<th scope="row" th:text="${livro.id}"></th>
 					<td th:text="${livro.titulo}"></td>
 					<td th:text="${livro.autor}"></td>

@@ -12,7 +12,21 @@
 
 <body>
 	<div class="container">
-		<h1 class="display-4 mt-5">Usuários cadastrados</h1>
+		<h1 class="display-6 mt-5">Emprestimos</h1>
+		<h1 class="display-4 mt-5" th:text="${usuario.nome}"></h1>
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(erro)}">
+			<span th:text="${erro}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		<div class="row">
+			<div class="col-6 d-grid gap-2 d-md-flex">			
+				<a class="btn btn-light" th:href="@{'/emprestimo/cadastrar/' + ${usuario.id}}" role="button">Cadastrar</a>
+			</div>
+			<div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+			    <a class="btn btn-primary" href="/livro" role="button">Livros</a>
+			    <a class="btn btn-primary" href="/usuario"  role="button">Usuarios</a>
+			</div>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>
@@ -24,13 +38,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="emprestimo : ${emprestimos}">
+				<tr th:each="emprestimo : ${usuario.livros}">
 					<th scope="row" th:text="${emprestimo.id}"></th>
 					<td th:text="${emprestimo.livro.titulo}"></td>
 					<td th:text="${emprestimo.dataDeEmprestimo}"></td>
 					<td th:text="${emprestimo.dataPrevistaDeDevolucao}"></td>
 					<td th:text="${emprestimo.dataRealDeDevolucao}"></td>
-					<td><a class="btn btn-primary" th:href="@{'/emprestimo/cadastrar/' + ${emprestimo.id}}">ATUALIZAR</a></td>
+					<td><a class="btn btn-primary" th:href="@{'/emprestimo/cadastrar/' + ${usuario.id} + '/' + ${emprestimo.id}}">ATUALIZAR</a></td>
 					<td><button class="btn btn-danger" th:attr="onclick=|removerEmprestimo('${emprestimo.id}')|">REMOVER</button></td>
 				</tr>
 			</tbody>

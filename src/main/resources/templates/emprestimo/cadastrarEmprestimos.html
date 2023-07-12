@@ -12,8 +12,9 @@
 
 <body>
 	<div class="container">
-		<h1 class="display-4 mt-5">Cadastrando Usuário</h1>
-		<form action="#" th:action="@{/usuario/cadastrar}" th:object="${usuario}" method="post">
+		<h1 class="display-6 mt-5">Cadastrando emprestimo</h1>
+		<h1 class="display-4 mt-5" th:text="${usuario.nome}"></h1>
+		<form action="#" th:action="@{/emprestimo/cadastrar}" th:object="${emprestimo}" method="post">
 			<div class="alert alert-success alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(mensagem)}">
 				<span th:text="${mensagem}">Salvo com sucesso!</span>
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -22,31 +23,28 @@
 				<span th:text="${erro}"></span>
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 			</div>
-			<input type="hidden" th:field="*{id}" th:value="${usuario.id}" class="form-control" id="id" />
+			<input type="hidden" th:field="*{usuario.id}" th:value="${usuario.id}" class="form-control" id="id" />
 			<div class="mb-3 row">
-				<div class="col-12">
-					<label for="titulo">Nome</label>
-					<input type="text" th:field="*{nome}" th:value="${usuario.nome}" class="form-control" id="nome" />
+				<div class="col-12">					
+					<label for="livroList" class="form-label">Livros disponiveis</label>
+					<select class="form-control" list="datalistOptions" id="livroList" th:field="*{livro}">
+					  <option th:each="livro : ${livroOpcoes}" th:value="${livro}" th:text="${livro.titulo}"></option>
+					</select>
 				</div>
 			</div>
 			<div class="mb-3 row">
 				<div class="col-6">
-					<label for="correioEletronico">Correio Eletrônico</label>
-					<input type="text" th:field="*{correioEletronico}" th:value="${usuario.correioEletronico}" class="form-control" id="correioEletronico" />
+					<label for="dataEmprestimo">Data Emprestimo</label>
+					<input type="date" th:field="*{dataDeEmprestimo}" th:value="${dataDeEmprestimo}" class="form-control" id="dataEmprestimo" />
 				</div>
-				<div class="col-2">
-					<label for="telefone">Telefone</label>
-					<input type="number" th:field="*{telefone}" th:value="${usuario.telefone}" class="form-control" id="telefone" />
+				<div class="col-6">
+					<label for="dataDevolucao">Devolução Prevista</label>
+					<input type="date" th:field="*{dataPrevistaDeDevolucao}" th:value="${dataPrevistaDeDevolucao}" class="form-control" id="dataDevolucao" />
 				</div>
-				<div class="col-4">
-					<label for="senha">Senha</label>
-					<input type="text" th:field="*{senha}" th:value="${usuario.senha}" class="form-control" id="senha" />
-				</div>
-				
 			</div>
 			<div class="mb-3 row">
 				<div class="col-12 d-grid">
-					<button type="submit" class="mt-4 btn btn-primary">Cadastrar Usuario</button>
+					<button type="submit" class="mt-4 btn btn-primary">Cadastrar Empréstimo</button>
 				</div>
 			</div>
 		</form>
