@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://thymeleaf.org">
-
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,26 +8,34 @@
 		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
 </head>
-
 <body>
 	<div class="container">
 		<h1 class="display-6 mt-5">Cadastrando emprestimo</h1>
 		<h1 class="display-4 mt-5" th:text="${usuario.nome}"></h1>
+		<a class="btn btn-primary" th:href="@{'/emprestimo/' + ${usuario.id}}">EMPRESTIMOS</a>
+		<div class="alert alert-success alert-dismissible fade show" role="alert"
+			 th:attr="hidden=${#strings.isEmpty(mensagem)}">
+			<span th:text="${mensagem}">Salvo com sucesso!</span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		<div class="alert alert-danger alert-dismissible fade show" role="alert"
+			 th:attr="hidden=${#strings.isEmpty(erro)}">
+			<span th:text="${erro}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
 		<form action="#" th:action="@{/emprestimo/cadastrar}" th:object="${emprestimo}" method="post">
-			<div class="alert alert-success alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(mensagem)}">
-				<span th:text="${mensagem}">Salvo com sucesso!</span>
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-			</div>
-			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:attr="hidden=${#strings.isEmpty(erro)}">
-				<span th:text="${erro}"></span>
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-			</div>
-			<input type="hidden" th:field="*{usuario.id}" th:value="${usuario.id}" class="form-control" id="id" />
+			<input type="hidden" th:field="*{id}" th:value="${emprestimo.id}" class="form-control" id="emprestimo_id" />
+			<select hidden="hidden" class="form-control" id="id_usuario" th:field="*{usuario}">
+				<option th:value="${usuario.id}"></option>
+			</select>
 			<div class="mb-3 row">
 				<div class="col-12">					
 					<label for="livroList" class="form-label">Livros disponiveis</label>
-					<select class="form-control" list="datalistOptions" id="livroList" th:field="*{livro}">
-					  <option th:each="livro : ${livroOpcoes}" th:value="${livro}" th:text="${livro.titulo}"></option>
+					<select class="form-control" id="livroList" th:field="*{livro}">
+					  <option
+							  th:each="livro : ${livroOpcoes}"
+							  th:value="${livro.id}"
+							  th:text="${livro.titulo}"></option>
 					</select>
 				</div>
 			</div>

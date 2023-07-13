@@ -14,7 +14,7 @@ public class EmprestimoService {
 	EmprestimoRepository emprestimoRepository;
 
 	public Emprestimo updateEmprestimo(Emprestimo emprestimo, Long id) throws NotFoundException {
-		Emprestimo atualizado = emprestimoRepository.findById(id).orElseThrow(() -> new NotFoundException());
+		Emprestimo atualizado = emprestimoRepository.findById(id).orElseThrow(NotFoundException::new);
 		atualizado.setDataDeEmprestimo(emprestimo.getDataDeEmprestimo());
 		atualizado.setDataPrevistaDeDevolucao(emprestimo.getDataPrevistaDeDevolucao());
 		atualizado.setDataRealDeDevolucao(emprestimo.getDataRealDeDevolucao());
@@ -22,7 +22,11 @@ public class EmprestimoService {
 		return atualizado;
 		
 	}
-	
+
+	public Emprestimo getEmprestimo(Long id) throws NotFoundException {
+		return emprestimoRepository.findById(id).orElseThrow(NotFoundException::new);
+	}
+
 	public Emprestimo createEmprestimo(Emprestimo emprestimo) {
 		return emprestimoRepository.save(emprestimo);
 	}
