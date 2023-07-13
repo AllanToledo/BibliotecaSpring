@@ -58,6 +58,7 @@ public class UsuarioController {
     	}
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        
         Usuario usuario = new Usuario();
         usuario.setCorreioEletronico(data.login());
         usuario.setSenha(encryptedPassword);
