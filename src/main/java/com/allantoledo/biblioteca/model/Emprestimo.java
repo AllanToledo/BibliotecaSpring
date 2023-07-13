@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,16 +18,19 @@ public class Emprestimo {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="id_usuario")
 	@JsonIgnore
 	@ToString.Exclude
 	private Usuario usuario;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="id_livro")
 	private Livro livro;
+	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataDeEmprestimo;
+	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataPrevistaDeDevolucao;
+	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataRealDeDevolucao;
 
 	@Override

@@ -3,6 +3,7 @@ package com.allantoledo.biblioteca.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +20,7 @@ import com.allantoledo.biblioteca.service.LivroService;
 import com.allantoledo.biblioteca.service.UsuarioService;
 
 @RestController
-@RequestMapping("/emprestimo")
+@RequestMapping("/biblioteca/emprestimos")
 public class EmprestimoController {
 	
 	@Autowired
@@ -54,6 +55,17 @@ public class EmprestimoController {
 			Emprestimo atualizado = emprestimoService.updateEmprestimo(emprestimo, id);
 			return ResponseEntity.ok(atualizado);
 		} catch (NotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Emprestimo> deleteEmprestimo(@PathVariable Long id){
+		try {
+			Emprestimo emprestimo = emprestimoService.getEmprestimo(id);
+			emprestimoService.deleteEmprestimo(emprestimo);
+			return ResponseEntity.ok(emprestimo);
+		} catch(NotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}

@@ -43,5 +43,10 @@ public class UsuarioService {
 		usuarioRepository.delete(deletado);
 		return deletado;
 	}
+
+	
+	public Usuario findByLogin(String login) throws NotFoundException {
+		return usuarioRepository.findByLogin(login).orElseThrow(() -> new NotFoundException());
+	}
 	
 }

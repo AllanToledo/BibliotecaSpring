@@ -30,4 +30,8 @@ public class EmprestimoService {
 	public Emprestimo createEmprestimo(Emprestimo emprestimo) {
 		return emprestimoRepository.save(emprestimo);
 	}
+	
+	public void deleteEmprestimo(Emprestimo emprestimo) {
+		emprestimoRepository.delete(emprestimo);
+	}
 }

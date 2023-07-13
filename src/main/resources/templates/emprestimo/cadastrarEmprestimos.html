@@ -24,14 +24,20 @@
 			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 		</div>
 		<form action="#" th:action="@{/emprestimo/cadastrar}" th:object="${emprestimo}" method="post">
-			<input type="hidden" th:field="*{id}" th:value="${emprestimo.id}" class="form-control" id="emprestimo_id" />
-			<select hidden="hidden" class="form-control" id="id_usuario" th:field="*{usuario}">
+			<input type="hidden" th:field="*{id}" th:value="${emprestimo.id}" class="form-control" id="id" />
+			<select hidden="hidden" class="form-control" id="usuario" th:field="*{usuario}">
 				<option th:value="${usuario.id}"></option>
 			</select>
 			<div class="mb-3 row">
 				<div class="col-12">					
-					<label for="livroList" class="form-label">Livros disponiveis</label>
-					<select class="form-control" id="livroList" th:field="*{livro}">
+					<label for="livro" class="form-label">Livros disponiveis</label>
+					<input type="hidden" th:if="${isUpdate}" th:field="*{livro}" th:value="${emprestimo.livro} != null ? ${emprestimo.livro.id}" />
+					<select 
+					class="form-control" 
+					id="livro" 
+					th:disabled="${isUpdate}"
+					th:value="${emprestimo.livro} != null ? ${emprestimo.livro.id}"
+					th:field="*{livro}">
 					  <option
 							  th:each="livro : ${livroOpcoes}"
 							  th:value="${livro.id}"
@@ -40,13 +46,33 @@
 				</div>
 			</div>
 			<div class="mb-3 row">
-				<div class="col-6">
-					<label for="dataEmprestimo">Data Emprestimo</label>
-					<input type="date" th:field="*{dataDeEmprestimo}" th:value="${dataDeEmprestimo}" class="form-control" id="dataEmprestimo" />
+				<div class="col-4">
+					<label for="dataDeEmprestimo">Data Emprestimo</label>
+					<input type="hidden" th:if="${isUpdate}" th:field="*{dataDeEmprestimo}" th:value="${{emprestimo.dataDeEmprestimo}}" />
+					<input type="date" 
+					th:field="*{dataDeEmprestimo}" 
+					th:value="${{emprestimo.dataDeEmprestimo}}" 
+					class="form-control"
+					th:disabled="${isUpdate}"
+					id="dataDeEmprestimo" />
 				</div>
-				<div class="col-6">
-					<label for="dataDevolucao">Devolução Prevista</label>
-					<input type="date" th:field="*{dataPrevistaDeDevolucao}" th:value="${dataPrevistaDeDevolucao}" class="form-control" id="dataDevolucao" />
+				<div class="col-4">
+					<label for="dataPrevistaDeDevolucao">Devolução Prevista</label>
+					<input type="hidden" th:if="${isUpdate}" th:field="*{dataPrevistaDeDevolucao}" th:value="${{emprestimo.dataPrevistaDeDevolucao}}" />
+					<input type="date" 
+					th:field="*{dataPrevistaDeDevolucao}" 
+					th:value="${{emprestimo.dataPrevistaDeDevolucao}}" 
+					class="form-control" 
+					th:disabled="${isUpdate}"
+					id="dataPrevistaDeDevolucao" />
+				</div>
+				<div class="col-4">
+					<label for="dataRealDeDevolucao">Devolução Real</label>
+					<input type="date"
+					th:field="*{dataRealDeDevolucao}" 
+					th:value="${{emprestimo.dataRealDeDevolucao}}"
+					class="form-control" 
+					id="dataRealDeDevolucao" />
 				</div>
 			</div>
 			<div class="mb-3 row">

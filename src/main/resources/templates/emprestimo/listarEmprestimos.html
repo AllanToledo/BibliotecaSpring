@@ -55,9 +55,9 @@
 	integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
 	crossorigin="anonymous"></script>
 <script>
-	async function removerLivro(id) {
+	async function removerEmprestimo(id) {
 		console.log(id);
-		let response = await fetch("http://localhost:8080/biblioteca/emprestimo/" + id, { method: 'DELETE' });
+		let response = await fetch("http://localhost:8080/biblioteca/emprestimos/" + id, { method: 'DELETE' });
 		if(response.ok){
 			location.reload();
 		} else {

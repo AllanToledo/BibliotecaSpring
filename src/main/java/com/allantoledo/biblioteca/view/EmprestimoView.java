@@ -65,6 +65,7 @@ public class EmprestimoView {
 		view.addObject("erro", erro);
 		view.addObject("usuario", usuario);
 		view.addObject("emprestimo", emprestimo);
+		view.addObject("isUpdate", false);
 		view.addObject("livroOpcoes", livroService.getAllLivros());
 		
 		return view;
@@ -89,6 +90,7 @@ public class EmprestimoView {
 		view.addObject("erro", erro);
 		view.addObject("usuario", usuario);
 		view.addObject("emprestimo", emprestimo);
+		view.addObject("isUpdate", true);
 		view.addObject("livroOpcoes", livroService.getAllLivros());
 
 		return view;
@@ -115,6 +117,7 @@ public class EmprestimoView {
 		view.addObject("mensagem", mensagem);
 		view.addObject("usuario", usuario);
 		view.addObject("emprestimo", emprestimo);
+		view.addObject("isUpdate", false);
 		view.addObject("livroOpcoes", livroService.getAllLivros());
 		
 		return view;
