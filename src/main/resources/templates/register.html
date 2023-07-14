@@ -13,31 +13,25 @@
 	<div class="container">
 		<div class="row justify-content-center mt-5">
 			<div class="col-4">
-				<h1 class="display-4">Login</h1>
+				<h1 class="display-4">Cadastro</h1>
 			</div>
 		</div>
-		<div class="row justify-content-center mt-5">
-			<div class="col-4">
-				<div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(erro)}" th:text="${erro}">
-				</div>
-			</div>
-		</div>
-		<form action="#" th:action="@{/login/try}" th:object="${register}" method="post">
+		<form action="/register" method="post">
 			<div class="row justify-content-center">
 				<div class="col-4">
-					<label for="login" class="form-label">Email</label>
-					<input type="text" th:field="*{login}" class="form-control" id="login">
+					<label for="user" class="form-label">Email</label>
+					<input type="user" name="user" class="form-control" id="user">
 				</div>
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-4">
 					<label for="password" class="form-label">Senha</label>
-					<input type="password" th:field="*{password}"  class="form-control" id="password">
+					<input type="password" name="password" class="form-control" id="password">
 				</div>
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-4 d-grid">
-					<button type="submit" class="btn btn-primary mt-3">Entrar</button>
+					<button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
 				</div>
 			</div>
 		</form>
