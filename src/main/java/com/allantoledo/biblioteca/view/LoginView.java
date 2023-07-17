@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,19 +37,20 @@ public class LoginView {
         view.addObject("register", new RegisterDTO("", "", UserRole.USER));
     	return view;
     }
-    
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @PostMapping("/try")
-    public String loginTry(RegisterDTO data){
-    	System.out.println(data);
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        System.out.println(usernamePassword);
-        return "redirect:/livro";
-    }  
+
+    @GetMapping("/logout")
+    public String logout() {
+    	SecurityContextHolder.getContext().setAuthentication(null);
+    	SecurityContextHolder.clearContext();
+    	return "redirect:/livro";
+    }
+
+//    @PostMapping("/try")
+//    public String loginTry(RegisterDTO data){
+//    	System.out.println(data);
+//        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+//        var auth = this.authenticationManager.authenticate(usernamePassword);
+//        System.out.println(usernamePassword);
+//        return "redirect:/livro";
+//    }  
 }
