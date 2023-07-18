@@ -29,6 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.getUsername(),
                     user.getPassword(),
                     user.getAuthorities());
+            System.out.println(springUser);
             return springUser;
         } else {
             //throw new UsernameNotFoundException(String.format("Username not found"));

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) {
 
         UsernamePasswordAuthenticationToken authToken = null;
+        SecurityContextHolder.clearContext();
 
         if (authentication == null) {
             return null;
@@ -39,6 +41,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     
         if (user.getPassword().equals(upassw)) {
             authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }    
         return authToken;
     }

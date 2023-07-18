@@ -14,12 +14,14 @@
 	<div class="container">
 		<h1 class="display-4 mt-5">Livros disponiveis</h1>
 		<div class="row">
-			<div class="col-6 d-grid gap-2 d-md-flex">			
-		<a class="btn btn-light" href="/livro/cadastrar" role="button">Cadastrar</a>
+			<div class="col-6 d-grid gap-2 d-md-flex">
+				<a class="btn btn-light" href="/livro/cadastrar" role="button">Cadastrar</a>
 			</div>
 			<div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
-			    <a class="btn btn-primary" href="/usuario"  role="button">Usuarios</a>
+				<a class="btn btn-primary" href="/usuario" role="button">Usuarios</a>
+				<a class="btn btn-DANGER" href="/logout" role="button">SAIR</a>
 			</div>
+
 		</div>
 		<table class="table">
 			<thead>
@@ -31,15 +33,16 @@
 					<th scope="col">Disponivel</th>
 				</tr>
 			</thead>
-			<tbody>		
-	   			<tr th:each="livro : ${livros}">
+			<tbody>
+				<tr th:each="livro : ${livros}">
 					<th scope="row" th:text="${livro.id}"></th>
 					<td th:text="${livro.titulo}"></td>
 					<td th:text="${livro.autor}"></td>
 					<td th:text="${livro.anoDePublicacao}"></td>
 					<td th:text="${livro.disponivel}"></td>
 					<td><a class="btn btn-primary" th:href="@{'/livro/cadastrar/' + ${livro.id}}">ATUALIZAR</a></td>
-					<td><button class="btn btn-danger" th:attr="onclick=|removerLivro('${livro.id}')|">REMOVER</button></td>
+					<td><button class="btn btn-danger" th:attr="onclick=|removerLivro('${livro.id}')|">REMOVER</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -51,13 +54,14 @@
 <script>
 	async function removerLivro(id) {
 		console.log(id);
-		let response = await fetch("http://localhost:8080/biblioteca/livros/" + id, { method: 'DELETE' });
-		if(response.ok){
+		let response = await fetch("http://localhost:8080/biblioteca/livros/" + id, {method: 'DELETE'});
+		if (response.ok) {
 			location.reload();
 		} else {
 			alert("Não foi possivel remover livro.");
 		}
-		
+
 	}
 </script>
+
 </html>

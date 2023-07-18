@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.jaas.AuthorityGranter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -31,10 +34,8 @@ public class SpringSecurity {
 	@Autowired
 	private CustomAuthenticationProvider authProvider;
 
-	// @Bean
-	private AuthenticationManager authManager() throws Exception {
-		// AuthenticationManager authManager = new ProviderManager(new
-		// MyFirstCustomAuthenticationProvider());
+	@Bean
+	public AuthenticationManager authManager() throws Exception {
 		AuthenticationManager authManager = new ProviderManager(authProvider);
 		return authManager;
 	}
@@ -42,29 +43,26 @@ public class SpringSecurity {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-				.csrf()
-				.disable()
-				.exceptionHandling()
-				.authenticationEntryPoint((request, response, authException) -> {
-					response.setHeader("WWW-Authenticate", "Basic realm=SignIn");
-				})
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeHttpRequests(authorize -> authorize
-						// .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
-						// .requestMatchers(HttpMethod.GET, "/login/**").permitAll()
-						.requestMatchers(HttpMethod.GET, "/login/**").permitAll()
-						.requestMatchers(HttpMethod.GET, "/livro/**").hasRole("FUNCIONARIO")
-						.requestMatchers(HttpMethod.GET, "/emprestimo/**").hasRole("FUNCIONARIO")
-						.requestMatchers(HttpMethod.GET, "/usuario/**").hasRole("FUNCIONARIO")
-						.requestMatchers(HttpMethod.GET, "/biblioteca/**").hasRole("FUNCIONARIO")
-						.requestMatchers(HttpMethod.DELETE, "/biblioteca/**").hasRole("ADMIN").anyRequest()
-						.authenticated())
-				.httpBasic();
+		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+		.authorizeHttpRequests(authorize -> authorize
+//				.requestMatchers(HttpMethod.POST, "/login/**").permitAll()
+//				.requestMatchers(HttpMethod.GET, "/login/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/livro").hasAuthority("FUNCIONARIO")
+				.requestMatchers(HttpMethod.GET, "/emprestimo").hasAuthority("FUNCIONARIO")
+				.requestMatchers(HttpMethod.GET, "/usuario").hasAuthority("FUNCIONARIO")
+				.requestMatchers(HttpMethod.GET, "/biblioteca").hasAuthority("FUNCIONARIO")
+				.requestMatchers(HttpMethod.DELETE, "/biblioteca").hasAuthority("FUNCIONARIO")
+					.anyRequest().authenticated());
+		
+		httpSecurity.formLogin().defaultSuccessUrl("/livro");
+		httpSecurity.logout();
+//				.securityContext((securityContext) -> securityContext
+//						.securityContextRepository(new RequestAttributeSecurityContextRepository()));
+		// .httpBasic();
+		//httpSecurity.addFilter(new UsernamePasswordAuthenticationFilter(authManager()));   
 
-		httpSecurity.addFilter(new BasicAuthenticationFilter(authManager()));
-		//httpSecurity.logout().logoutUrl("/livro").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+		// httpSecurity.addFilter(new BasicAuthenticationFilter(authManager()));
+		// httpSecurity.logout().logoutUrl("/livro").invalidateHttpSession(true).deleteCookies("JSESSIONID");
 		return httpSecurity.build();
 	}
 
