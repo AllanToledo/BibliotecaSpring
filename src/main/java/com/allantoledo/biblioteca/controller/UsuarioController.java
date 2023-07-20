@@ -2,10 +2,12 @@ package com.allantoledo.biblioteca.controller;
 
 import java.util.List;
 
+import com.allantoledo.biblioteca.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allantoledo.biblioteca.model.Usuario;
-import com.allantoledo.biblioteca.security.RegisterDTO;
 import com.allantoledo.biblioteca.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -27,6 +28,9 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioService usuarioService;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	@GetMapping
 	public List<Usuario> listAllUsers() {
@@ -49,25 +53,25 @@ public class UsuarioController {
 	}
 	
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity register(@RequestBody @Valid Usuario data){
     	try {
-    		usuarioService.findByLogin(data.login()); 
+    		usuarioService.findByLogin(data.getCorreioEletronico());
     		return ResponseEntity.badRequest().build();
-    	} catch(NotFoundException e) {
-    		
+    	} catch(NotFoundException ignored) {
+
     	}
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
+
         Usuario usuario = new Usuario();
-        usuario.setCorreioEletronico(data.login());
+        usuario.setCorreioEletronico(data.getCorreioEletronico());
         usuario.setSenha(encryptedPassword);
-        usuario.setRole(data.role());
+        usuario.setRole(UserRole.USER);
 
         usuarioService.saveUsuario(usuario);
 
         return ResponseEntity.ok().build();
-    }	
+    }
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {

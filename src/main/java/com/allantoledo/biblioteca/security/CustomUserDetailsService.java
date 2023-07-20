@@ -1,6 +1,9 @@
 package com.allantoledo.biblioteca.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,27 +18,23 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UsuarioRepository repo;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-        Usuario user;
-        org.springframework.security.core.userdetails.User springUser = null;
+        Usuario userDb; //Usuario do banco de dados
+        User springUser; //Usuario do Spring Security, esse que ele usa para gerênciar as sessões
 
-        user = repo.findByLogin(username).orElse(null);
+        userDb = repo.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        if (user != null) {
+        springUser = new User(
+                userDb.getUsername(),
+                userDb.getPassword(),
+                userDb.getAuthorities());
+        logger.error("User: " + springUser.toString());
+        return springUser;
 
-            springUser = new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getAuthorities());
-            System.out.println(springUser);
-            return springUser;
-        } else {
-            //throw new UsernameNotFoundException(String.format("Username not found"));
-            return null;
-
-        }
-        //return null;
     }
 }
