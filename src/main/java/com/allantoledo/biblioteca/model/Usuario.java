@@ -39,7 +39,7 @@ public class Usuario implements UserDetails {
 	@NotBlank(message = "É obrigatório um endereço de email.")
 	private String correioEletronico;
 
-	private UserRole role;
+	private UserRole role = UserRole.USER;
 
 	private int quantidadeDeLivrosEmprestados;
 

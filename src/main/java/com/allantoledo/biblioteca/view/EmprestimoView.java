@@ -54,7 +54,7 @@ public class EmprestimoView {
 			usuario = usuarioService.getUsuario(usuarioId);
 		} catch(NotFoundException e) {
 			erro = "Usuário não encontrado.";
-			var view = new ModelAndView("erro");
+			var view = new ModelAndView("error");
 			view.addObject("erro", erro);
 			return view;
 		}
@@ -81,7 +81,7 @@ public class EmprestimoView {
 			emprestimo = emprestimoService.getEmprestimo(emprestimoId);
 		} catch(NotFoundException e) {
 			erro = "Usuário ou empréstimo não encontrado.";
-			var view = new ModelAndView("erro");
+			var view = new ModelAndView("error");
 			view.addObject("erro", erro);
 			return view;
 		}
@@ -104,7 +104,7 @@ public class EmprestimoView {
 			emprestimo = emprestimoService.createEmprestimo(emprestimo);
 			mensagem = "Empréstimo cadastrado com sucesso.";
 		} catch(Exception e) {
-			var view = new ModelAndView("erro");
+			var view = new ModelAndView("error");
 			view.addObject("erro", e.getMessage());
 			return view;
 		}

@@ -21,8 +21,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 
 @Controller
-@RequestMapping("/usuario")
-public class UserView {
+@RequestMapping("/novo")
+public class RegistroView {
 
     @Autowired
     UsuarioService usuarioService;
@@ -34,32 +34,9 @@ public class UserView {
     private PasswordEncoder passwordEncode;
 
     @GetMapping
-    public ModelAndView listarUsuarios() {
-        var view = new ModelAndView("usuario/listarUsuarios");
-        view.addObject("usuarios", usuarioService.getAllUsuarios());
-        return view;
-    }
-
-    @GetMapping("/cadastrar")
     public ModelAndView cadastrarUsuarios() {
-        var view = new ModelAndView("usuario/cadastrarUsuarios");
+        var view = new ModelAndView("registrarUsuario");
         view.addObject("usuario", new Usuario());
-        return view;
-    }
-
-    @GetMapping("/cadastrar/{id}")
-    public ModelAndView cadastrarUsuarios(@PathVariable long id) {
-        var view = new ModelAndView("usuario/cadastrarUsuarios");
-        Usuario usuario;
-        String erro = "";
-        try {
-            usuario = usuarioService.getUsuario(id);
-        } catch (NotFoundException e) {
-            usuario = new Usuario();
-            erro = "Usuário não encontrado.";
-        }
-        view.addObject("usuario", usuario);
-        view.addObject("erro", erro);
         return view;
     }
 
@@ -74,22 +51,12 @@ public class UserView {
                     .collect(Collectors.joining("\n"));
 
         } else {
+        	usuario.setRole(UserRole.USER);
             usuario.setSenha(passwordEncode.encode(usuario.getSenha()));
-            try {
-                if (usuario.getId() != null && usuario.getId() > 0) {
-                    usuarioService.updateUsuario(usuario, usuario.getId());
-                    mensagem = "Usuário atualizado com sucesso!";
-                } else {
-                	usuario.setRole(UserRole.USER);
-                    usuarioService.saveUsuario(usuario);
-                    mensagem = "Usuário cadastrado com sucesso!";
-                }
-            } catch (NotFoundException e) {
-                erro = "Usuário não encontrado.";
-            }
+            usuarioService.saveUsuario(usuario);
             usuario = new Usuario();
         }
-        var view = new ModelAndView("usuario/cadastrarUsuarios");
+        var view = new ModelAndView("registrarUsuario");
         view.addObject("mensagem", mensagem);
         view.addObject("erro", erro);
         view.addObject("usuario", usuario);

@@ -27,13 +27,17 @@ public class SpringSecurity {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
+		.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 		.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers(HttpMethod.GET, "/error").permitAll()
+				.requestMatchers(HttpMethod.POST, "/novo/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/novo/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/livro").hasAuthority("USER")
 				.requestMatchers(HttpMethod.GET, "/emprestimo").hasAuthority("FUNCIONARIO")
 				.requestMatchers(HttpMethod.GET, "/usuario").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.GET, "/biblioteca").hasAuthority("FUNCIONARIO")
 				.requestMatchers(HttpMethod.POST, "/biblioteca/usuario/register").permitAll()
+				.requestMatchers(HttpMethod.GET, "/biblioteca").hasAuthority("FUNCIONARIO")
 				.requestMatchers(HttpMethod.DELETE, "/biblioteca").hasAuthority("ADMIN")
 					.anyRequest().authenticated());
 		

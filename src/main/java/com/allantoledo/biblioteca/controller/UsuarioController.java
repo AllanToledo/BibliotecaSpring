@@ -3,6 +3,9 @@ package com.allantoledo.biblioteca.controller;
 import java.util.List;
 
 import com.allantoledo.biblioteca.security.UserRole;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,8 @@ public class UsuarioController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@GetMapping
 	public List<Usuario> listAllUsers() {
 		return usuarioService.getAllUsuarios();
@@ -53,20 +58,24 @@ public class UsuarioController {
 	}
 	
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid Usuario data){
+    public ResponseEntity register(@RequestBody Usuario data){
     	try {
     		usuarioService.findByLogin(data.getCorreioEletronico());
     		return ResponseEntity.badRequest().build();
     	} catch(NotFoundException ignored) {
 
     	}
-
+    	
+    	logger.info(data.toString());
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
 
         Usuario usuario = new Usuario();
         usuario.setCorreioEletronico(data.getCorreioEletronico());
-        usuario.setSenha(encryptedPassword);
+        usuario.setNome(data.getNome());
+        usuario.setQuantidadeDeLivrosEmprestados(0);
         usuario.setRole(UserRole.USER);
+        usuario.setSenha(encryptedPassword);
+        usuario.setTelefone(data.getTelefone());
 
         usuarioService.saveUsuario(usuario);
 

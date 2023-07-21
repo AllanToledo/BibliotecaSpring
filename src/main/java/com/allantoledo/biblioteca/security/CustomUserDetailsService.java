@@ -23,18 +23,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-        Usuario userDb; //Usuario do banco de dados
-        User springUser; //Usuario do Spring Security, esse que ele usa para gerênciar as sessões
+//        Usuario userDb; //Usuario do banco de dados
+//        User springUser; //Usuario do Spring Security, esse que ele usa para gerênciar as sessões
 
-        userDb = repo.findByLogin(username)
+        return repo.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        springUser = new User(
-                userDb.getUsername(),
-                userDb.getPassword(),
-                userDb.getAuthorities());
-        logger.error("User: " + springUser.toString());
-        return springUser;
+//        springUser = new User(
+//                userDb.getUsername(),
+//                userDb.getPassword(),
+//                userDb.getAuthorities());
+//        logger.error("User: " + springUser.toString());
+//        return springUser;
 
     }
 }

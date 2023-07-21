@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.allantoledo.biblioteca.model.Usuario;
 import com.allantoledo.biblioteca.repository.UsuarioRepository;
+import com.allantoledo.biblioteca.security.UserRole;
 
 @Service
 public class UsuarioService {
@@ -23,13 +24,15 @@ public class UsuarioService {
 	}
 	
 	public Usuario saveUsuario(Usuario usuario) {
+		usuario.setRole(UserRole.ADMIN); //para fim de testes
 		return usuarioRepository.save(usuario);
 	}
 	
 	public Usuario updateUsuario(Usuario usuario, Long id) throws NotFoundException {
 		Usuario atualizado = usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException());
 		atualizado.setNome(usuario.getNome());
-		atualizado.setSenha(usuario.getSenha());
+		if(usuario.getSenha() != null)
+			atualizado.setSenha(usuario.getSenha());
 		atualizado.setCorreioEletronico(usuario.getCorreioEletronico());
 		atualizado.setTelefone(usuario.getTelefone());
 		atualizado.setQuantidadeDeLivrosEmprestados(usuario.getQuantidadeDeLivrosEmprestados());
